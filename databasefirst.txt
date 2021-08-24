@@ -1,0 +1,56 @@
+create database Dev
+use ThreeTierDB
+
+create table Country
+(
+id int primary key identity,
+cname varchar(50))
+
+
+insert into Country values('India'),('Pakistan'),('USA')
+
+create table State
+(
+id int primary key identity,
+sname varchar(50),
+cid int foreign key references Country(id))\
+
+insert into State values('UP',1),('Haryana',1),('Lahore',2),('Baluchistan',2),('Washinton',3),('Alaska',3)
+
+
+insert into City values('Ghaziabad',1),('Rohtak',2),('Islamabad',3),('Sindh',4),('Georgia',5),('Gingin',6)
+
+
+create table City
+(
+id int primary key identity,
+city_name varchar(50),
+sid int foreign key references State(id))
+
+create proc GetCountry
+as
+begin
+select * from Country
+end
+
+Create proc GetState
+@cid int=0
+as begin
+if(@cid=0)
+select * from State
+else
+begin
+select * from State  where cid=@cid
+end
+end
+
+Create proc GetCity
+@sid int=0
+as begin
+if(@sid=0)
+select * from City
+else
+begin
+select * from City  where sid=@sid
+end
+end
